@@ -49,6 +49,8 @@ const loginUser = async (req, res) => {
 const registerUser = async (req, res) => {
 	const { username, password,hobbies } = req.body;
 
+	console.log(req.body);
+
 	if (!username || !password || !hobbies) {
 		return res.status(400).json({ message: "All fields are required" });
 	}
@@ -60,7 +62,13 @@ const registerUser = async (req, res) => {
 
 	const hashedPassword = await bcrypt.hash(password, 10);
 
-	const newUser = await User.create({ username, password: hashedPassword });
+	const newUser = await User.create({ 
+					username, 
+					password: hashedPassword,
+					hobbies,
+					friends:[],
+					friendsRequest:[]
+			});
 	if (!newUser) {
 		return res.status(400).json({ message: "User not created!" });
 	}
